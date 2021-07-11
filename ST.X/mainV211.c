@@ -73,7 +73,7 @@ float rT=0, eT=0, iT=0, dT=0, yT=0, uT=0, iT0=0, eT0=0, iT_1=0, eT_1=0;
 unsigned char menu = 0;   //se usa para indicar que pantalla (de 1 a 8) esta visible
 unsigned char hibernation=0;    //indica si esta habilitada la hibernacion
 char s[20];     //para escribir en el LCD
-unsigned int Temp=248, Set_Temp=250, Max_Temp=400, Min_Temp=90, Beep=0, Sleep_Delay=3, Sleep_Temp=100, Hib_Delay=1, Temp_Adj=0; 
+unsigned int Temp=248, Set_Temp=250, Max_Temp=400, Min_Temp=90, Beep=0, Sleep_Delay=3, Sleep_Temp=100, Hib_Delay=100, Temp_Adj=0; 
 unsigned int Count_Sleep=0; //se usa para contar el retardo cuando esta en modo Sleep o Hibernacion
 
 unsigned char menu3=1, menu4=1, menu5=0, menu6=1, menu7=0, menu8=0; //se usa para indicar que opcion esta selecionada de cada menu
@@ -465,7 +465,7 @@ void At_Button_Down(void)
                     Hib_Delay = Hib_Delay - 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,4);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -532,7 +532,7 @@ void At_Button_Down(void)
                     Hib_Delay = Hib_Delay - 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,3);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -599,7 +599,7 @@ void At_Button_Down(void)
                     Hib_Delay = Hib_Delay - 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,2);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -1353,7 +1353,7 @@ void At_Button_Up(void)
                     Hib_Delay = Hib_Delay + 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,4);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -1420,7 +1420,7 @@ void At_Button_Up(void)
                     Hib_Delay = Hib_Delay + 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,3);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -1487,7 +1487,7 @@ void At_Button_Up(void)
                     Hib_Delay = Hib_Delay + 1;
                     //actualizamos el LCD
                     Lcd_Set_Cursor(13,2);
-                    sprintf(s,"%dmin ",Hib_Delay);
+                    sprintf(s,"%ds  ",Hib_Delay);
                     Lcd_Write_String(s);
                 }
                 else    // aca entra si esta en modo menu.
@@ -1719,7 +1719,7 @@ void Menu6(void)
     Lcd_Write_String(s);
     
     Lcd_Set_Cursor(1,4);
-    sprintf(s,"   HibDelay %dmin ",Hib_Delay);
+    sprintf(s,"   HibDelay %ds  ",Hib_Delay);
     Lcd_Write_String(s);
 }
 
@@ -1741,7 +1741,7 @@ void Menu7(void)
     Lcd_Write_String(s);
     
     Lcd_Set_Cursor(1,3);
-    sprintf(s,"   HibDelay %dmin",Hib_Delay);
+    sprintf(s,"   HibDelay %ds  ",Hib_Delay);
     Lcd_Write_String(s);
     
     Lcd_Set_Cursor(1,4);
@@ -1763,7 +1763,7 @@ void Menu8(void)
     Lcd_Write_String(s);
     
     Lcd_Set_Cursor(1,2);
-    sprintf(s,"   HibDelay %dmin",Hib_Delay);
+    sprintf(s,"   HibDelay %ds  ",Hib_Delay);
     Lcd_Write_String(s);
     
     Lcd_Set_Cursor(1,3);
@@ -1998,7 +1998,7 @@ int main(void)
     Menu0();    // llamo a la funcion que escribe en el LCD el menu0
     menu = 0;   //indico que estamos en el menu 0
    
-    T2CONbits.TON = 1;  //habilitamos el timer2 y por ende al PWM1
+    //T2CONbits.TON = 1;  //habilitamos el timer2 y por ende al PWM1
     
         
     while(1)
@@ -2017,7 +2017,7 @@ int main(void)
                 }
                 else
                 {
-                    if(Count_Sleep >= (600 * Hib_Delay))
+                    if(Count_Sleep >= (10 * Hib_Delay))
                     {
                         T2CONbits.TON = 0;  //deshabilitamos el timer2 y por ende apagamos por software el PWM1
                         LATBbits.LATB15 = 0;  //deshabilitamos le PWM por hardware  
